@@ -1,1 +1,6 @@
 # These are the bash commands for the app-tier
+
+## Connect to the instance
+sudo -su ec2-user
+
+##
