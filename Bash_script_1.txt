@@ -1,9 +1,0 @@
-# These are the bash commands for the app-tier
-
-## Connect to the instance
-sudo -su ec2-user
-
-## Download MySQL CLI
-sudo yum install mysql -y
-
-## DB connects with Aurora RDS
