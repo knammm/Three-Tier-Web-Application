@@ -1,1 +1,0 @@
-# These are the bash commands for the web-tier
