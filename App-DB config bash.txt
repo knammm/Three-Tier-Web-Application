@@ -1,0 +1,20 @@
+# These are the bash commands for the app-tier database configuration
+
+## Connect to the instance
+sudo -su ec2-user
+
+## Download MySQL CLI
+sudo yum install mysql -y
+
+## DB connects with Aurora RDS
+mysql -h [RDS-ENDPOINT] -u admin -p
+
+## Create a database called webappdb
+CREATE DATABASE webappdb;   
+SHOW DATABASES;
+USE webappdb;
+
+## Create table and Insert data into table
+CREATE TABLE IF NOT EXISTS transactions(id INT NOT NULL AUTO_INCREMENT, amount DECIMAL(10,2), description VARCHAR(100), PRIMARY KEY(id));
+INSERT INTO transactions (amount,description) VALUES ('792003','KNAMMM');   
+SELECT * FROM transactions;
