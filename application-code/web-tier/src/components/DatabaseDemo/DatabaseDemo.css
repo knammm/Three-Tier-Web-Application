@@ -1,41 +1,49 @@
-#transactions {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: larger;
-  border-collapse: collapse;
-  width: 100%;
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #7e40f6;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(126, 64, 246, 1),
+    rgba(80, 139, 252, 1)
+  );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    rgba(126, 64, 246, 1),
+    rgba(80, 139, 252, 1)
+  );
 }
-
-#transactions td, #transactions th {
-  border: 1px solid rgb(9, 81, 187);
-  color: white;
-  padding: 8px;
+.demo-heading {
+  background: -webkit-linear-gradient(to right, rgba(126, 64, 246, 1), rgba(80, 139, 252, 1));
+  background: linear-gradient(
+    to right,
+    rgba(126, 64, 246, 1),
+    rgba(80, 139, 252, 1)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 2.4em !important;
+  padding-left: 50px !important;
+  font-weight: bolder !important;
+  font-family: 'Courier New', Courier, monospace;
 }
-
-#title {
-  color: white
+.mask-custom {
+  background: rgba(24, 24, 16, 0.2);
+  border-radius: 2em;
+  backdrop-filter: blur(25px);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  background-clip: padding-box;
+  box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
 }
-
-#colHeader td{
-  color:rgb(9, 81, 187);
-}
-
-#transactions tr:nth-child(even){background-color: #0A0128;} 
-
-#transactions tr:hover {background-color:#221f2d;}
-
-#transactions th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4CAF50;
-}
-
-thead,
-tbody {
-display: block;
-}
-
-tbody {
-height: 500px;
-overflow: auto;
+.table-warning
+{
+  --bs-table-bg: linear-gradient(
+    to right,
+    rgba(126, 64, 246, 1),
+    rgba(80, 139, 252, 1)
+  )!important;
 }
