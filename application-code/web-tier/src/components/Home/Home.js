@@ -1,17 +1,47 @@
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import homeLogo from "../../Assets/home-main.svg";
+import Particle from "../Particle";
+import Type from "./Type";
 
-    import React, {Component} from 'react';
-    import architecture from '../../assets/3TierArch.png'
+function Home() {
+  return (
+    <section>
+      <Container fluid className="home-section" id="home">
+        <Particle />
+        <Container className="home-content">
+          <Row>
+            <Col md={7} className="home-header">
+              <h1 style={{ paddingBottom: 15 }} className="heading">
+                Hi There!{" "}
+                <span className="wave" role="img" aria-labelledby="wave">
+                  👋🏻
+                </span>
+              </h1>
 
-    class Home extends Component {
-        render () {
-        return (
-          <div style={{ position: "relative" }}>
-            <h1 style={{ color: "white" }}>Nguyen Khanh Nam - 2153599</h1>
-            <h1 style={{ color: "white" }}>AWS 3-TIER WEB APP DEMO</h1>
-            <img src={architecture} alt="3T Web App Architecture" style={{ height: 400, width: 825 }} />
-          </div>
-        );
-      }
-    }
+              <h1 className="heading-name">
+                I'M
+                <strong className="main-name"> KHANH NAM </strong>
+              </h1>
 
-    export default Home;
+              <div style={{ padding: 50, textAlign: "left" }}>
+                <Type />
+              </div>
+            </Col>
+
+            <Col md={5} style={{ paddingBottom: 20 }}>
+              <img
+                src={homeLogo}
+                alt="home pic"
+                className="img-fluid"
+                style={{ maxHeight: "450px" }}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </Container>
+    </section>
+  );
+}
+
+export default Home;
