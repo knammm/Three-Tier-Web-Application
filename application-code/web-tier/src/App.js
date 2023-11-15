@@ -1,48 +1,45 @@
-import React, { useState, useRef } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { useOnClickOutside } from './hooks';
-import { GlobalStyles } from './global';
-import { theme } from './theme';
-import { Burger, Menu } from './components';
-import FocusLock from 'react-focus-lock';
-import DatabaseDemo from './components/DatabaseDemo/DatabaseDemo'
-import Home from './components/Home/Home'
+import React, { useState, useEffect } from "react";
+import Preloader from "../src/components/Pre";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home/Home";
+import DatabaseDemo from "./components/DatabaseDemo/DatabaseDemo";
+// import About from "./components/About/About";
+// import Footer from "./components/Footer";
 import {
-  HashRouter as Router,
-  Switch,
+  BrowserRouter as Router,
   Route,
+  Routes,
+  Navigate
 } from "react-router-dom";
-
+// import ScrollToTop from "./components/ScrollToTop";
+import "./style.css";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const [open, setOpen] = useState(false);
-  const node = useRef();
-  const menuId = "main-menu";
+  const [load, upadateLoad] = useState(true);
 
-  useOnClickOutside(node, () => setOpen(false));
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      upadateLoad(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <div ref={node}>
-          <FocusLock disabled={!open}>
-            <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
-            <Router>
-              <div>
-            <Menu open={open} setOpen={setOpen} id={menuId} />
-            <Switch>
-          <Route path="/db">
-            <DatabaseDemo />
-          </Route>
-          <Route path="/">
-            <Home/>
-          </Route>
-        </Switch>
-        </div>
-        </Router>
-          </FocusLock>
-        </div>
-    </ThemeProvider>
+    <Router>
+      <Preloader load={load} />
+      <div className="App" id={load ? "no-scroll" : "scroll"}>
+        <Navbar />
+        {/* <ScrollToTop /> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<DatabaseDemo />} />
+          <Route path="*" element={<Navigate to="/"/>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
