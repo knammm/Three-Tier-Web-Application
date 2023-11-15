@@ -1,117 +1,141 @@
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import {
+  MDBBadge,
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBContainer,
+  MDBIcon,
+  MDBRow,
+  MDBTable,
+  MDBTableBody,
+  MDBTableHead,
+} from "mdb-react-ui-kit";
+import "./DatabaseDemo.css";
+import Particle from "../Particle";
+export default function DatabaseDemo() {
+  const [transactions, setTransactions] = useState([]);
+  const [textAmt, setTextAmt] = useState("");
+  const [textDesc, setTextDesc] = useState("");
+  useEffect(() => {
+    fetchData();// sau khi render 
 
-    import React, {Component} from 'react';
-    import './DatabaseDemo.css';
-
-    class DatabaseDemo extends Component {
-     
-        constructor(props) {
-            super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
-            this.handleTextChange = this.handleTextChange.bind(this);
-            this.handleButtonClick = this.handleButtonClick.bind(this);
-            this.handleButtonClickDel = this.handleButtonClickDel.bind(this);
-            this.state = { 
-               transactions: [],
-               text_amt: "",
-               text_desc:""
-            }
-         }
-
-         componentDidMount() {
-            this.populateData();
-          }
-
-        populateData(){
-            this.fetch_retry('/api/transaction',3)
-            .then(res => res.json())
-            .then((data) => {
-              this.setState({ transactions : data.result });
-              console.log("state set");
-              console.log(this.state.transactions);
-            })
-            .catch(console.log);
-        }  
-
-        async fetch_retry(url, n){
-            try {
-                return await fetch(url)
-            } catch(err) {
-                if (n === 1) throw err;
-                await new Promise(resolve => setTimeout(resolve, 1000)); 
-                return await this.fetch_retry(url, n - 1);
-            }
-        };
-
-
-          renderTableData() {
-            return this.state.transactions.map((transaction, index) => {
-               const { id, amount, description} = transaction //destructuring
-               return (
-                  <tr key={id}>
-                     <td>{id}</td>
-                     <td>{amount}</td>
-                     <td>{description}</td>
-                  </tr>
-               )
-            })
-         }
-
-        handleButtonClickDel(){
-           const requestOptions = {
-               method: 'DELETE'
-           }
-           fetch('/api/transaction', requestOptions)
-           .then(response => response.json())
-           .then(data => this.populateData())
-
-           this.setState({text_amt : "", text_desc:"",transaction:[]});
-
-        }
-
-         handleButtonClick(){
-             console.log(this.state.text_amt);
-             console.log(this.state.text_desc);
-            const requestOptions = {
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({"amount":this.state.text_amt, "desc" :this.state.text_desc})
-            }
-            
-            fetch('/api/transaction', requestOptions)
-            .then(response => response.json())
-            .then(data => this.populateData())
-            
-            this.setState({text_amt : "", text_desc:""});
-
-         }
-
-         handleTextChange(e){
-            this.setState({[e.target.name]:e.target.value})
-         }
-
-
-        render () {
-        return (
-            <div>
-            <h1 id='title' style={{paddingRight:"1em"}}>Aurora Database Demo Page</h1><input style={{float:"right", marginBottom:"1em"}} type = "button" value ="DEL" onClick={this.handleButtonClickDel} />
-            <table id='transactions'>
-               <tbody>
-                   <tr>
-                       <td>ID</td>
-                       <td>AMOUNT</td>
-                       <td>DESC</td>
-                   </tr>
-                   <tr>
-                        <td><input type = "button" value ="ADD" onClick={this.handleButtonClick}/></td>
-                        <td><input type="text" name ="text_amt" value = {this.state.text_amt} onChange={this.handleTextChange}/></td>
-                        <td><input type="text" name = "text_desc" value = {this.state.text_desc} onChange={this.handleTextChange}/></td>
-                   </tr>
-                  {this.renderTableData()}
-               </tbody>
-            </table>
-         </div>
-
-        );
-      }
+  }, []);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/transaction'); // Thay thế URL bằng URL API thực tế
+      setTransactions(response.data.result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  };
+  const handleButtonClick = async () => {
+    try {
+       await axios.post('/api/transaction', {
+        amount: textAmt,
+        desc: textDesc,
+      }); 
+      fetchData();
+      setTextAmt("");
+      setTextDesc("");
+    } catch (error) {
+      console.error('Error adding data:', error);
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/transaction/${id}`);
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
 
-    export default DatabaseDemo;
+  const handleDeleteAll = async () => {
+    try {
+      await axios.delete('/api/transaction');
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting all data:', error);
+    }
+  };
+  return (
+    <section className=" vh-100">
+      <Particle />
+      <MDBContainer className="py-5 h-100">
+        <MDBRow className="d-flex justify-content-center align-items-center">
+          <MDBCol md="12" xl="10">
+            <h1 className="demo-heading p-4" >Demo DataBase</h1>
+          </MDBCol>
+          <MDBCol md="12"   >
+            <MDBCard className="gradient-custom-2 text-white">
+              <MDBCardBody className="p-4 text-white">
+
+                <MDBTable className=" text-white mb-0" >
+                  <MDBTableHead  >
+                    <tr className="table-warning ">
+                      <th scope="col">Amount<input className="form-control" id='textAmont' value={textAmt} type='text' onChange={(e) => setTextAmt(e.target.value)} placeholder="fill the amount" />
+                      </th>
+                      <th scope="col">Description <input className="form-control" id='textDescription' type='text' value={textDesc}
+                        onChange={(e) => setTextDesc(e.target.value)} placeholder="fill the description" />
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex flex-column">
+                          Id
+                          <button className="btn" style={{ backgroundColor: "#4EA8DE", color: "#F2F2F2" }} onClick={handleButtonClick}>
+                            Add
+                          </button>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div className="d-flex flex-column">
+                          Action
+                          <button className="btn" style={{ backgroundColor: "#4EA8DE", color: "#F2F2F2" }} onClick={handleDeleteAll}>
+                            DeleteAll
+                          </button>
+                        </div>
+                      </th>
+
+                    </tr>
+                  </MDBTableHead>
+                  <MDBTableBody>
+                    {transactions.map((transaction, index) => (
+                      <tr className="table-warning fw-normal">
+                        <th>
+                          <img
+                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                            alt="avatar 1"
+                            style={{ width: "45px", height: "auto" }}
+                          />
+                          <span className="ms-2">{transaction.amount}</span>
+                        </th>
+                        <td className="align-middle">
+                          <span>{transaction.description}</span>
+                        </td>
+                        <td className="align-middle">
+                          <h6 className="mb-0">
+                            <MDBBadge className="mx-2 text-center" color="danger">
+                              priority   {transaction.id}
+                            </MDBBadge>
+
+                          </h6>
+                        </td>
+                        <td className="align-middle">
+                          <button onClick={() => handleDelete(transaction.id)} >
+                            <span> <MDBIcon fas icon="trash-alt" /></span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </MDBTableBody>
+                </MDBTable>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </section>
+  );
+}
