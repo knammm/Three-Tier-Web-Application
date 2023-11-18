@@ -1,4 +1,0 @@
-# These are the bash commands for the web-tier configuration
-
-## Connect to the instance
-sudo -su ec2-user
