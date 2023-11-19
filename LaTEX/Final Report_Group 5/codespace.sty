@@ -1,0 +1,49 @@
+\ProvidesPackage{codespace}
+
+% Need python Pygments and --shell-escape flag
+% \RequirePackage[dvipsnames]{xcolor}
+% \RequirePackage{tikz}
+% \RequirePackage[framemethod=tikz]{mdframed}
+% \RequirePackage{minted,verbatim}
+% \RequirePackage[linesnumbered,lined,boxed,commentsnumbered]{algorithm2e}
+
+% \usemintedstyle{emacs}
+
+% \newenvironment{code}[1]{
+%   \VerbatimEnvironment%
+%   \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=grey!10,nobreak=false]%
+%     \begin{minted}[linenos=true,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{#1}%
+% }{
+%     \end{minted}%
+%   \end{mdframed}%
+% }
+
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{mPink}{rgb}{230, 230, 250}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C
+}
